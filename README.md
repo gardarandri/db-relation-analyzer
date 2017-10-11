@@ -11,7 +11,11 @@ To compile the program type make in a comand line.
 The input files for the tool have the following format
 
 > (The attributes in the program)
+>
 > (Functional 1)
+>
 > (Functional 2)
+>
 > ....
+>
 > (Functional n)
