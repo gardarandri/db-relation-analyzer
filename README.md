@@ -19,3 +19,10 @@ The input files for the tool have the following format
 > ....
 >
 > (Functional n)
+
+To see examples of input files, check out the tests folder.
+Type
+
+> dban -h
+
+to get help for how to use the program.
