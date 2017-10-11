@@ -353,6 +353,10 @@ int set_option(char* flag){
 
 int main(int argc, char** argv){
 	if(argc < 2) printf("Error: No input files! (fatal)\n");
+	if(strcmp(argv[1],"-h") == 0 || strcmp(argv[1],"-help") == 0){
+		set_option(argv[1]);
+		return 1;
+	}
 
 	int at_arg = 2;
 	while(at_arg < argc){
