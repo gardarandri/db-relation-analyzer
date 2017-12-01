@@ -1,0 +1,17 @@
+ABCDEFGHIJKLMNOP
+A -> B
+B -> A
+C -> D
+D -> C
+E -> F
+F -> E
+G -> H
+H -> G
+I -> J
+J -> I
+K -> L
+L -> K
+M -> N
+N -> M
+O -> P
+P -> O

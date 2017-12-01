@@ -1,0 +1,11 @@
+ABCDEFGHIJ
+A -> J
+A -> B
+C -> B
+C -> D
+E -> D
+E -> F
+G -> F
+G -> H
+I -> H
+I -> J
