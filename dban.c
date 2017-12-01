@@ -6,7 +6,7 @@
 #define NUM_CHARS 256
 #define MAX_STACK_SIZE 1024
 
-//#define DEBUG
+#define DEBUG
 
 typedef struct{
 	char has[NUM_CHARS+1];
@@ -130,9 +130,9 @@ void add_symbol(char s){
 
 /*
  * P ::= H T
- * H ::= C H
- * H ::= 
- * C ::= some character not newline, -, > or whitespace
+ * H ::= (some character not newline, -, > or whitespace) C
+ * C ::= (some character not newline, -, > or whitespace) C
+ * C ::=
  * T ::= T' T
  * T ::=
  * T' ::= C "->" C newline
@@ -143,17 +143,24 @@ void P(FILE* fp);
 int C(FILE* fp);
 int Tm(FILE* fp);
 void T(FILE* fp);
-void H(FILE* fp);
+int H(FILE* fp);
 void P(FILE* fp);
 
 
 void P(FILE* fp){
-	H(fp), T(fp);
+	H(fp);
+	T(fp);
 }
 
-void H(FILE* fp){
-	C(fp);
+int H(FILE* fp){
+	read_char(fp);
+	if(token == '-' || token == '>') throw_error("Characters '-' and '>' cannot be attribute names.");
+	add_symbol(token);
+	int read_file = C(fp)
 	for(int i=0; i<read_stack_top; i++) add_symbol(read_stack[i]);
+	line++;
+
+	return read_file;
 }
 
 int C(FILE* fp){
@@ -177,6 +184,8 @@ int C(FILE* fp){
 }
 
 void T(FILE* fp){
+	read_char();
+	if(token == )
 	while(!Tm(fp)){}
 }
 
@@ -352,7 +361,10 @@ int set_option(char* flag){
 }
 
 int main(int argc, char** argv){
-	if(argc < 2) printf("Error: No input files! (fatal)\n");
+	if(argc < 2){
+		printf("Error: No input files! (fatal)\n");
+		exit(0);
+	}
 	if(strcmp(argv[1],"-h") == 0 || strcmp(argv[1],"-help") == 0){
 		set_option(argv[1]);
 		return 1;
