@@ -6,7 +6,8 @@
 #define NUM_CHARS 256
 #define MAX_STACK_SIZE 1024
 
-#define DEBUG
+// Uncomment for debug mode
+//#define DEBUG
 
 typedef struct{
 	char has[NUM_CHARS+1];
@@ -156,7 +157,7 @@ int H(FILE* fp){
 	read_char(fp);
 	if(token == '-' || token == '>') throw_error("Characters '-' and '>' cannot be attribute names.");
 	add_symbol(token);
-	int read_file = C(fp)
+	int read_file = C(fp);
 	for(int i=0; i<read_stack_top; i++) add_symbol(read_stack[i]);
 	line++;
 
@@ -184,8 +185,7 @@ int C(FILE* fp){
 }
 
 void T(FILE* fp){
-	read_char();
-	if(token == )
+	if(token != '-')
 	while(!Tm(fp)){}
 }
 
@@ -268,7 +268,7 @@ KeyChain* final_key_chain_end = NULL;
 KeyChain** key_map;
 int** g;
 
-void find_all_keys(AttributeSet* base, int at, int can_add){
+void find_all_keys(AttributeSet* base, int at, int can_add, int get_super_keys){
 	AttributeSet r;
 	AttributeSet* result = &r;
 	memcpy(result, base, sizeof(AttributeSet));
@@ -292,10 +292,10 @@ void find_all_keys(AttributeSet* base, int at, int can_add){
 	if(at == NUM_CHARS) return;
 
 	base->has[at] = 1;
-	find_all_keys(base, at+1, 1);
+	find_all_keys(base, at+1, 1, get_super_keys);
 
 	base->has[at] = 0;
-	find_all_keys(base, at+1, can_add);
+	find_all_keys(base, at+1, can_add, get_super_keys);
 }
 
 int is_subset_of(AttributeSet* a, AttributeSet* b){
@@ -377,6 +377,9 @@ int main(int argc, char** argv){
 
 
 	FILE* input_file = fopen(argv[1], "r");
+	if(!input_file) {
+		throw_error("Failed to open the file given!");
+	}
 
 	init();
 
@@ -405,7 +408,7 @@ int main(int argc, char** argv){
 
 	AttributeSet as1;
 	memset(as1.has, 0, sizeof(as1.has));
-	find_all_keys(&as1, 0, 1);
+	find_all_keys(&as1, 0, 1, print_superkeys);
 
 	printf("\n");
 	print_superkeys ? printf("Super keys:\n") : 0;
@@ -492,7 +495,7 @@ int main(int argc, char** argv){
 			print_3nf ? print_attr_set(&at->lhs) : 0;
 			print_3nf ? printf(" -> ") : 0;
 			print_3nf ? print_attr_set(&at->rhs) : 0;
-			print_3nf ? printf(" breaks the 3NF condition!\n") : 0;
+			print_3nf ? printf(" violates the 3NF condition!\n") : 0;
 			relation_3nf = 0;
 		}
 		if(is_bcnf(at) == 0){
@@ -500,7 +503,7 @@ int main(int argc, char** argv){
 			print_bcnf ? print_attr_set(&at->lhs) : 0;
 			print_bcnf ? printf(" -> ") : 0;
 			print_bcnf ? print_attr_set(&at->rhs) : 0;
-			print_bcnf ? printf(" breaks the BCNF condition!\n") : 0;
+			print_bcnf ? printf(" violates the BCNF condition!\n") : 0;
 			relation_bcnf = 0;
 		}
 		at = at->next;
