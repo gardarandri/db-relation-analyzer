@@ -63,7 +63,7 @@ void eat_whitespace(FILE* fp){
 }
 
 Functional* make_new_functional(){
-	Functional* res = malloc(sizeof(Functional));
+	Functional* res = calloc(1,sizeof(Functional));
 	res->next = NULL;
 
 	int at = 0;
@@ -191,7 +191,7 @@ void T(FILE* fp){
 
 int Tm(FILE* fp){
 	int at_file_end;
-	Functional* n = malloc(sizeof(Functional));
+	Functional* n = calloc(1,sizeof(Functional));
 
 	at_file_end = C(fp);
 	for(int i=0; i<read_stack_top; i++) n->lhs.has[read_stack[i]] = 1;
@@ -276,11 +276,11 @@ void find_all_keys(AttributeSet* base, int at, int can_add, int get_super_keys){
 
 	if(has_all(result) && can_add){
 		if(key_chain_first == NULL){
-			key_chain_first = malloc(sizeof(KeyChain));
+			key_chain_first = calloc(1,sizeof(KeyChain));
 			memcpy(&(key_chain_first->attr), base, sizeof(AttributeSet));
 			key_chain_end = key_chain_first;
 		}else{
-			key_chain_end->next = malloc(sizeof(KeyChain));
+			key_chain_end->next = calloc(1,sizeof(KeyChain));
 			memcpy(&(key_chain_end->next->attr), base, sizeof(AttributeSet));
 			key_chain_end = key_chain_end->next;
 		}
@@ -423,9 +423,9 @@ int main(int argc, char** argv){
 	}
 
 	int number_of_keys = keynum;
-	key_map = malloc(number_of_keys * sizeof(KeyChain*));
-	g = malloc(number_of_keys * sizeof(int*));
-	g[0] = malloc(number_of_keys * number_of_keys * sizeof(int));
+	key_map = calloc(number_of_keys, sizeof(KeyChain*));
+	g = calloc(number_of_keys, sizeof(int*));
+	g[0] = calloc(number_of_keys * number_of_keys, sizeof(int));
 	for(int i=0; i<number_of_keys; i++){
 		g[i] = g[0] + i*number_of_keys;
 	}
@@ -456,13 +456,13 @@ int main(int argc, char** argv){
 		}
 		if(found_cex == 0) {
 			if(final_key_chain_first == NULL){
-				KeyChain* n = malloc(sizeof(KeyChain));
+				KeyChain* n = calloc(1,sizeof(KeyChain));
 				memcpy(n, key_map[i], sizeof(KeyChain));
 				n->next = NULL;
 				final_key_chain_first = n;
 				final_key_chain_end = final_key_chain_first;
 			}else{
-				KeyChain* n = malloc(sizeof(KeyChain));
+				KeyChain* n = calloc(1,sizeof(KeyChain));
 				memcpy(n, key_map[i], sizeof(KeyChain));
 				n->next = NULL;
 				final_key_chain_end->next = n;

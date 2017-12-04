@@ -1,0 +1,6 @@
+ABCDE
+AB -> C
+AC -> B
+AD -> E
+B -> D
+BC -> A
